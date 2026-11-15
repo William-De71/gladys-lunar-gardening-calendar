@@ -1,0 +1,957 @@
+{
+  "manifest_version": 1,
+  "type": "calendar",
+  "name": "Lunar gardening calendar",
+  "description": {
+    "en": "Fruit, root, flower, leaf days, ascending moon, days to avoid: calendar, scenes, widgets.",
+    "fr": "Jours fruits, racines, fleurs, feuilles, lune montante, jours à éviter : calendrier, scènes.",
+    "de": "Frucht-, Wurzel-, Blüten-, Blatttage, Mondbahn, ungünstige Tage: Kalender, Szenen, Widgets.",
+    "es": "Días de fruto, raíz, flor y hoja, luna ascendente, días a evitar: calendario, escenas."
+  },
+  "version": "0.1.0",
+  "docker_image": "ghcr.io/william-de71/gladys-lunar-gardening-calendar:0.1.0",
+  "gladys_version": ">=5.3.0",
+  "categories": ["environment", "leisure", "services"],
+  "keywords": [
+    "calendrier lunaire",
+    "jardin",
+    "potager",
+    "biodynamie",
+    "Maria Thun",
+    "lune montante",
+    "jour racines",
+    "Mondkalender",
+    "calendario lunar",
+    "gardening"
+  ],
+  "cover_image": "https://raw.githubusercontent.com/William-De71/gladys-lunar-gardening-calendar/main/cover.jpg",
+  "transports": ["local"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Lunar gardening calendar",
+        "fr": "Calendrier lunaire du jardinier",
+        "de": "Mondkalender für den Garten",
+        "es": "Calendario lunar del huerto"
+      },
+      "description": {
+        "en": "How it works:\n1. Enable the integration for you in “My calendars” below: you get a “Lunar gardening calendar” with the fruit, root, flower and leaf days, the ascending and descending moon and the days to avoid, a year ahead. Share it with the household to use it in the scenes.\n2. Add the “Gardening moon” and “Garden week” widgets to a dashboard.\n3. In a scene, use the triggers (new day type, new trajectory, daily summary) or the “Get the gardening day” action.\nEverything is computed in the integration from the position of the moon (Maria Thun method, constellations of the sky): no account, no connection.",
+        "fr": "Comment ça marche :\n1. Activez l’intégration pour vous dans « Mes calendriers » ci-dessous : vous obtenez un « Calendrier lunaire du jardinier » avec les jours fruits, racines, fleurs et feuilles, la lune montante et descendante et les jours à éviter, sur un an. Partagez-le avec le foyer pour l’utiliser dans les scènes.\n2. Ajoutez les widgets « Lune du jardinier » et « Semaine au jardin » à un tableau de bord.\n3. Dans une scène, utilisez les déclencheurs (nouveau type de jour, nouvelle trajectoire, résumé du jour) ou l’action « Obtenir le jour de jardinage ».\nTout est calculé dans l’intégration à partir de la position de la lune (méthode Maria Thun, constellations du ciel) : aucun compte, aucune connexion.",
+        "de": "So funktioniert es:\n1. Aktivieren Sie die Integration für sich unten unter „Meine Kalender“: Sie erhalten einen „Mondkalender für den Garten“ mit Frucht-, Wurzel-, Blüten- und Blatttagen, auf- und absteigendem Mond und ungünstigen Tagen für ein Jahr. Teilen Sie ihn mit dem Haushalt, um ihn in Szenen zu nutzen.\n2. Fügen Sie die Widgets „Gärtnermond“ und „Gartenwoche“ einem Dashboard hinzu.\n3. Nutzen Sie in einer Szene die Auslöser (neuer Tagestyp, neue Mondbahn, Tageszusammenfassung) oder die Aktion „Gartentag abrufen“.\nAlles wird in der Integration aus der Position des Mondes berechnet (Methode Maria Thun, Sternbilder des Himmels): kein Konto, keine Verbindung.",
+        "es": "Cómo funciona:\n1. Active la integración para usted en «Mis calendarios» más abajo: obtiene un «Calendario lunar del huerto» con los días de fruto, raíz, flor y hoja, la luna ascendente y descendente y los días desfavorables, para un año. Compártalo con el hogar para usarlo en las escenas.\n2. Añada los widgets «Luna del huerto» y «Semana en el huerto» a un panel.\n3. En una escena, use los disparadores (nuevo tipo de día, nueva trayectoria, resumen del día) o la acción «Obtener el día de huerto».\nTodo se calcula en la integración a partir de la posición de la luna (método Maria Thun, constelaciones del cielo): sin cuenta, sin conexión."
+      },
+      "links": [
+        {
+          "url": "https://github.com/William-De71/gladys-lunar-gardening-calendar/blob/main/docs/fr.md",
+          "label": {
+            "en": "Documentation (French)",
+            "fr": "Documentation",
+            "de": "Dokumentation (Französisch)",
+            "es": "Documentación (francés)"
+          }
+        },
+        {
+          "url": "https://github.com/William-De71/gladys-lunar-gardening-calendar/blob/main/docs/en.md",
+          "label": {
+            "en": "Documentation",
+            "fr": "Documentation (anglais)",
+            "de": "Dokumentation (Englisch)",
+            "es": "Documentación (inglés)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "calendar_trajectory",
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "en": "Ascending and descending moon in the calendar",
+        "fr": "Lune montante et descendante dans le calendrier",
+        "de": "Auf- und absteigender Mond im Kalender",
+        "es": "Luna ascendente y descendente en el calendario"
+      },
+      "description": {
+        "en": "One event per period, about 13 days each.",
+        "fr": "Un événement par période, d’environ 13 jours.",
+        "de": "Ein Ereignis pro Zeitraum, je etwa 13 Tage.",
+        "es": "Un evento por periodo, de unos 13 días."
+      }
+    },
+    {
+      "key": "calendar_avoid",
+      "type": "boolean",
+      "default": true,
+      "label": {
+        "en": "Days to avoid in the calendar",
+        "fr": "Jours à éviter dans le calendrier",
+        "de": "Ungünstige Tage im Kalender",
+        "es": "Días desfavorables en el calendario"
+      },
+      "description": {
+        "en": "One all-day event on the days of a perigee, an apogee, a lunar node or an eclipse.",
+        "fr": "Un événement d’une journée les jours de périgée, d’apogée, de nœud lunaire ou d’éclipse.",
+        "de": "Ein ganztägiges Ereignis an Tagen mit Erdnähe, Erdferne, Mondknoten oder Finsternis.",
+        "es": "Un evento de día completo los días de perigeo, apogeo, nodo lunar o eclipse."
+      }
+    },
+    {
+      "key": "event_hour",
+      "type": "number",
+      "min": 0,
+      "max": 23,
+      "default": 7,
+      "label": {
+        "en": "Hour of the daily summary",
+        "fr": "Heure du résumé du jour",
+        "de": "Stunde der Tageszusammenfassung",
+        "es": "Hora del resumen del día"
+      },
+      "description": {
+        "en": "The “Daily summary” trigger starts every day at this hour (0 to 23, in the timezone of Gladys).",
+        "fr": "Le déclencheur « Résumé du jour » démarre chaque jour à cette heure (0 à 23, dans le fuseau horaire de Gladys).",
+        "de": "Der Auslöser „Tageszusammenfassung“ startet jeden Tag zu dieser Stunde (0 bis 23, in der Zeitzone von Gladys).",
+        "es": "El disparador «Resumen del día» se inicia cada día a esta hora (0 a 23, en la zona horaria de Gladys)."
+      }
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "default": "auto",
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
+      "description": {
+        "en": "Scene texts and status. Automatic: the language of your dashboard once a widget has been shown, guessed from the timezone of Gladys before that. The calendar always follows the language of each user.",
+        "fr": "Textes des scènes et état. Automatique : la langue de votre tableau de bord dès qu’un widget a été affiché, devinée d’après le fuseau horaire de Gladys avant cela. Le calendrier suit toujours la langue de chaque utilisateur.",
+        "de": "Szenentexte und Status. Automatisch: die Sprache Ihres Dashboards, sobald ein Widget angezeigt wurde, vorher aus der Zeitzone von Gladys abgeleitet. Der Kalender folgt immer der Sprache jedes Benutzers.",
+        "es": "Textos de escenas y estado. Automático: el idioma de su panel en cuanto se haya mostrado un widget, deducido de la zona horaria de Gladys antes de eso. El calendario sigue siempre el idioma de cada usuario."
+      },
+      "options": [
+        {
+          "value": "auto",
+          "label": {
+            "en": "Automatic",
+            "fr": "Automatique",
+            "de": "Automatisch",
+            "es": "Automático"
+          }
+        },
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "English",
+            "de": "English",
+            "es": "English"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "Français",
+            "fr": "Français",
+            "de": "Français",
+            "es": "Français"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "Deutsch",
+            "fr": "Deutsch",
+            "de": "Deutsch",
+            "es": "Deutsch"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Español",
+            "fr": "Español",
+            "de": "Español",
+            "es": "Español"
+          }
+        }
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "key": "today",
+      "icon": "moon",
+      "label": {
+        "en": "Gardening moon",
+        "fr": "Lune du jardinier",
+        "de": "Gärtnermond",
+        "es": "Luna del huerto"
+      },
+      "description": {
+        "en": "The day type now and until when, the trajectory, the phase, and what to do.",
+        "fr": "Le type de jour en cours et jusqu’à quand, la trajectoire, la phase, et quoi faire.",
+        "de": "Der aktuelle Tagestyp und bis wann, die Mondbahn, die Phase und was zu tun ist.",
+        "es": "El tipo de día actual y hasta cuándo, la trayectoria, la fase y qué hacer."
+      }
+    },
+    {
+      "key": "week",
+      "icon": "calendar",
+      "label": {
+        "en": "Garden week",
+        "fr": "Semaine au jardin",
+        "de": "Gartenwoche",
+        "es": "Semana en el huerto"
+      },
+      "description": {
+        "en": "One line a day: day types, ascending or descending moon, days to avoid.",
+        "fr": "Une ligne par jour : types de jour, lune montante ou descendante, jours à éviter.",
+        "de": "Eine Zeile pro Tag: Tagestypen, auf- oder absteigender Mond, ungünstige Tage.",
+        "es": "Una línea por día: tipos de día, luna ascendente o descendente, días a evitar."
+      },
+      "settings": [
+        {
+          "key": "days",
+          "type": "number",
+          "min": 3,
+          "max": 10,
+          "default": 7,
+          "label": {
+            "en": "Days",
+            "fr": "Jours",
+            "de": "Tage",
+            "es": "Días"
+          },
+          "description": {
+            "en": "3 to 10, today first.",
+            "fr": "3 à 10, aujourd’hui en premier.",
+            "de": "3 bis 10, heute zuerst.",
+            "es": "3 a 10, hoy primero."
+          }
+        }
+      ]
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "day_type_changed",
+      "label": {
+        "en": "New day type",
+        "fr": "Nouveau type de jour",
+        "de": "Neuer Tagestyp",
+        "es": "Nuevo tipo de día"
+      },
+      "description": {
+        "en": "When the moon enters the constellation of a new day type.",
+        "fr": "Quand la lune entre dans la constellation d’un nouveau type de jour.",
+        "de": "Wenn der Mond in das Sternbild eines neuen Tagestyps eintritt.",
+        "es": "Cuando la luna entra en la constelación de un nuevo tipo de día."
+      },
+      "fields": [
+        {
+          "key": "day_type",
+          "type": "multi_select",
+          "label": {
+            "en": "Day types",
+            "fr": "Types de jour",
+            "de": "Tagestypen",
+            "es": "Tipos de día"
+          },
+          "description": {
+            "en": "Empty: every day type.",
+            "fr": "Vide : tous les types de jour.",
+            "de": "Leer: jeder Tagestyp.",
+            "es": "Vacío: todos los tipos de día."
+          },
+          "options": [
+            {
+              "value": "fruit",
+              "label": {
+                "en": "Fruit day",
+                "fr": "Jour fruits",
+                "de": "Fruchttag",
+                "es": "Día de fruto"
+              }
+            },
+            {
+              "value": "root",
+              "label": {
+                "en": "Root day",
+                "fr": "Jour racines",
+                "de": "Wurzeltag",
+                "es": "Día de raíz"
+              }
+            },
+            {
+              "value": "flower",
+              "label": {
+                "en": "Flower day",
+                "fr": "Jour fleurs",
+                "de": "Blütentag",
+                "es": "Día de flor"
+              }
+            },
+            {
+              "value": "leaf",
+              "label": {
+                "en": "Leaf day",
+                "fr": "Jour feuilles",
+                "de": "Blatttag",
+                "es": "Día de hoja"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "day_type",
+          "type": "string",
+          "label": {
+            "en": "Day type (fruit, root, flower, leaf)",
+            "fr": "Type de jour (fruit, root, flower, leaf)",
+            "de": "Tagestyp (fruit, root, flower, leaf)",
+            "es": "Tipo de día (fruit, root, flower, leaf)"
+          }
+        },
+        {
+          "key": "day_type_label",
+          "type": "string",
+          "label": {
+            "en": "Day type, in words",
+            "fr": "Type de jour, en toutes lettres",
+            "de": "Tagestyp, ausgeschrieben",
+            "es": "Tipo de día, en palabras"
+          }
+        },
+        {
+          "key": "constellation",
+          "type": "string",
+          "label": {
+            "en": "Constellation of the moon",
+            "fr": "Constellation de la lune",
+            "de": "Sternbild des Mondes",
+            "es": "Constelación de la luna"
+          }
+        },
+        {
+          "key": "ends_at",
+          "type": "string",
+          "label": {
+            "en": "End (YYYY-MM-DD HH:MM)",
+            "fr": "Fin (AAAA-MM-JJ HH:MM)",
+            "de": "Ende (JJJJ-MM-TT HH:MM)",
+            "es": "Fin (AAAA-MM-DD HH:MM)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary sentence",
+            "fr": "Phrase de résumé",
+            "de": "Zusammenfassung",
+            "es": "Frase de resumen"
+          }
+        },
+        {
+          "key": "advice",
+          "type": "string",
+          "label": {
+            "en": "Gardening advice",
+            "fr": "Conseil de jardinage",
+            "de": "Gartentipp",
+            "es": "Consejo de jardinería"
+          }
+        }
+      ]
+    },
+    {
+      "key": "trajectory_changed",
+      "label": {
+        "en": "New moon trajectory",
+        "fr": "Nouvelle trajectoire",
+        "de": "Neue Mondbahn",
+        "es": "Nueva trayectoria"
+      },
+      "description": {
+        "en": "When the moon turns ascending or descending.",
+        "fr": "Quand la lune devient montante ou descendante.",
+        "de": "Wenn der Mond auf- oder absteigend wird.",
+        "es": "Cuando la luna pasa a ascendente o descendente."
+      },
+      "fields": [
+        {
+          "key": "trajectory",
+          "type": "multi_select",
+          "label": {
+            "en": "Trajectory",
+            "fr": "Trajectoire",
+            "de": "Bahn",
+            "es": "Trayectoria"
+          },
+          "description": {
+            "en": "Empty: both.",
+            "fr": "Vide : les deux.",
+            "de": "Leer: beide.",
+            "es": "Vacío: ambas."
+          },
+          "options": [
+            {
+              "value": "ascending",
+              "label": {
+                "en": "Ascending moon",
+                "fr": "Lune montante",
+                "de": "Aufsteigender Mond",
+                "es": "Luna ascendente"
+              }
+            },
+            {
+              "value": "descending",
+              "label": {
+                "en": "Descending moon",
+                "fr": "Lune descendante",
+                "de": "Absteigender Mond",
+                "es": "Luna descendente"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "trajectory",
+          "type": "string",
+          "label": {
+            "en": "Trajectory (ascending, descending)",
+            "fr": "Trajectoire (ascending, descending)",
+            "de": "Bahn (ascending, descending)",
+            "es": "Trayectoria (ascending, descending)"
+          }
+        },
+        {
+          "key": "trajectory_label",
+          "type": "string",
+          "label": {
+            "en": "Trajectory, in words",
+            "fr": "Trajectoire, en toutes lettres",
+            "de": "Bahn, ausgeschrieben",
+            "es": "Trayectoria, en palabras"
+          }
+        },
+        {
+          "key": "ends_at",
+          "type": "string",
+          "label": {
+            "en": "End (YYYY-MM-DD HH:MM)",
+            "fr": "Fin (AAAA-MM-JJ HH:MM)",
+            "de": "Ende (JJJJ-MM-TT HH:MM)",
+            "es": "Fin (AAAA-MM-DD HH:MM)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary sentence",
+            "fr": "Phrase de résumé",
+            "de": "Zusammenfassung",
+            "es": "Frase de resumen"
+          }
+        },
+        {
+          "key": "advice",
+          "type": "string",
+          "label": {
+            "en": "Gardening advice",
+            "fr": "Conseil de jardinage",
+            "de": "Gartentipp",
+            "es": "Consejo de jardinería"
+          }
+        }
+      ]
+    },
+    {
+      "key": "daily_summary",
+      "label": {
+        "en": "Daily summary",
+        "fr": "Résumé du jour",
+        "de": "Tageszusammenfassung",
+        "es": "Resumen del día"
+      },
+      "description": {
+        "en": "Every day at the hour of the configuration, with the gardening day.",
+        "fr": "Chaque jour à l’heure de la configuration, avec le jour de jardinage.",
+        "de": "Jeden Tag zur Stunde der Konfiguration, mit dem Gartentag.",
+        "es": "Cada día a la hora de la configuración, con el día de huerto."
+      },
+      "fields": [
+        {
+          "key": "day_type",
+          "type": "multi_select",
+          "label": {
+            "en": "Day types",
+            "fr": "Types de jour",
+            "de": "Tagestypen",
+            "es": "Tipos de día"
+          },
+          "description": {
+            "en": "Empty: every day. Otherwise only when the main day type of the day is one of these.",
+            "fr": "Vide : chaque jour. Sinon seulement quand le type de jour principal de la journée en fait partie.",
+            "de": "Leer: jeden Tag. Sonst nur, wenn der Haupttagestyp des Tages dazugehört.",
+            "es": "Vacío: cada día. Si no, solo cuando el tipo de día principal es uno de estos."
+          },
+          "options": [
+            {
+              "value": "fruit",
+              "label": {
+                "en": "Fruit day",
+                "fr": "Jour fruits",
+                "de": "Fruchttag",
+                "es": "Día de fruto"
+              }
+            },
+            {
+              "value": "root",
+              "label": {
+                "en": "Root day",
+                "fr": "Jour racines",
+                "de": "Wurzeltag",
+                "es": "Día de raíz"
+              }
+            },
+            {
+              "value": "flower",
+              "label": {
+                "en": "Flower day",
+                "fr": "Jour fleurs",
+                "de": "Blütentag",
+                "es": "Día de flor"
+              }
+            },
+            {
+              "value": "leaf",
+              "label": {
+                "en": "Leaf day",
+                "fr": "Jour feuilles",
+                "de": "Blatttag",
+                "es": "Día de hoja"
+              }
+            }
+          ]
+        },
+        {
+          "key": "trajectory",
+          "type": "multi_select",
+          "label": {
+            "en": "Trajectory",
+            "fr": "Trajectoire",
+            "de": "Bahn",
+            "es": "Trayectoria"
+          },
+          "description": {
+            "en": "Empty: both.",
+            "fr": "Vide : les deux.",
+            "de": "Leer: beide.",
+            "es": "Vacío: ambas."
+          },
+          "options": [
+            {
+              "value": "ascending",
+              "label": {
+                "en": "Ascending moon",
+                "fr": "Lune montante",
+                "de": "Aufsteigender Mond",
+                "es": "Luna ascendente"
+              }
+            },
+            {
+              "value": "descending",
+              "label": {
+                "en": "Descending moon",
+                "fr": "Lune descendante",
+                "de": "Absteigender Mond",
+                "es": "Luna descendente"
+              }
+            }
+          ]
+        },
+        {
+          "key": "avoid",
+          "type": "select",
+          "label": {
+            "en": "Day to avoid",
+            "fr": "Jour à éviter",
+            "de": "Ungünstiger Tag",
+            "es": "Día desfavorable"
+          },
+          "description": {
+            "en": "Empty: every day.",
+            "fr": "Vide : chaque jour.",
+            "de": "Leer: jeden Tag.",
+            "es": "Vacío: cada día."
+          },
+          "options": [
+            {
+              "value": "yes",
+              "label": {
+                "en": "Only a day to avoid",
+                "fr": "Seulement un jour à éviter",
+                "de": "Nur ein ungünstiger Tag",
+                "es": "Solo un día desfavorable"
+              }
+            },
+            {
+              "value": "no",
+              "label": {
+                "en": "Only a good day",
+                "fr": "Seulement un jour favorable",
+                "de": "Nur ein günstiger Tag",
+                "es": "Solo un día favorable"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Day (YYYY-MM-DD)",
+            "fr": "Jour (AAAA-MM-JJ)",
+            "de": "Tag (JJJJ-MM-TT)",
+            "es": "Día (AAAA-MM-DD)"
+          }
+        },
+        {
+          "key": "day_type",
+          "type": "string",
+          "label": {
+            "en": "Day type (fruit, root, flower, leaf)",
+            "fr": "Type de jour (fruit, root, flower, leaf)",
+            "de": "Tagestyp (fruit, root, flower, leaf)",
+            "es": "Tipo de día (fruit, root, flower, leaf)"
+          }
+        },
+        {
+          "key": "day_type_label",
+          "type": "string",
+          "label": {
+            "en": "Day type, in words",
+            "fr": "Type de jour, en toutes lettres",
+            "de": "Tagestyp, ausgeschrieben",
+            "es": "Tipo de día, en palabras"
+          }
+        },
+        {
+          "key": "day_types",
+          "type": "string",
+          "label": {
+            "en": "Day types of the day, with their times",
+            "fr": "Types de jour de la journée, avec leurs heures",
+            "de": "Tagestypen des Tages, mit Uhrzeiten",
+            "es": "Tipos de día de la jornada, con sus horas"
+          }
+        },
+        {
+          "key": "constellation",
+          "type": "string",
+          "label": {
+            "en": "Constellation of the moon",
+            "fr": "Constellation de la lune",
+            "de": "Sternbild des Mondes",
+            "es": "Constelación de la luna"
+          }
+        },
+        {
+          "key": "trajectory",
+          "type": "string",
+          "label": {
+            "en": "Trajectory (ascending, descending)",
+            "fr": "Trajectoire (ascending, descending)",
+            "de": "Bahn (ascending, descending)",
+            "es": "Trayectoria (ascending, descending)"
+          }
+        },
+        {
+          "key": "trajectory_label",
+          "type": "string",
+          "label": {
+            "en": "Trajectory, in words",
+            "fr": "Trajectoire, en toutes lettres",
+            "de": "Bahn, ausgeschrieben",
+            "es": "Trayectoria, en palabras"
+          }
+        },
+        {
+          "key": "avoid",
+          "type": "string",
+          "label": {
+            "en": "Day to avoid (yes, no)",
+            "fr": "Jour à éviter (yes, no)",
+            "de": "Ungünstiger Tag (yes, no)",
+            "es": "Día desfavorable (yes, no)"
+          }
+        },
+        {
+          "key": "avoid_reasons",
+          "type": "string",
+          "label": {
+            "en": "Why to avoid it (empty most days)",
+            "fr": "Pourquoi l’éviter (vide la plupart des jours)",
+            "de": "Warum ungünstig (meist leer)",
+            "es": "Por qué evitarlo (vacío casi siempre)"
+          }
+        },
+        {
+          "key": "phase",
+          "type": "string",
+          "label": {
+            "en": "Phase (waxing, waning)",
+            "fr": "Phase (waxing, waning)",
+            "de": "Phase (waxing, waning)",
+            "es": "Fase (waxing, waning)"
+          }
+        },
+        {
+          "key": "phase_label",
+          "type": "string",
+          "label": {
+            "en": "Phase, in words",
+            "fr": "Phase, en toutes lettres",
+            "de": "Phase, ausgeschrieben",
+            "es": "Fase, en palabras"
+          }
+        },
+        {
+          "key": "illumination",
+          "type": "number",
+          "label": {
+            "en": "Lit part of the moon (%)",
+            "fr": "Partie éclairée de la lune (%)",
+            "de": "Beleuchteter Teil des Mondes (%)",
+            "es": "Parte iluminada de la luna (%)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary sentence",
+            "fr": "Phrase de résumé",
+            "de": "Zusammenfassung",
+            "es": "Frase de resumen"
+          }
+        },
+        {
+          "key": "advice",
+          "type": "string",
+          "label": {
+            "en": "Gardening advice",
+            "fr": "Conseil de jardinage",
+            "de": "Gartentipp",
+            "es": "Consejo de jardinería"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "get_garden_day",
+      "label": {
+        "en": "Get the gardening day",
+        "fr": "Obtenir le jour de jardinage",
+        "de": "Gartentag abrufen",
+        "es": "Obtener el día de huerto"
+      },
+      "description": {
+        "en": "Today or tomorrow: day type, trajectory, day to avoid, advice, and a sentence to send in a message.",
+        "fr": "Aujourd’hui ou demain : type de jour, trajectoire, jour à éviter, conseil, et une phrase à envoyer dans un message.",
+        "de": "Heute oder morgen: Tagestyp, Mondbahn, ungünstiger Tag, Tipp und ein Satz für eine Nachricht.",
+        "es": "Hoy o mañana: tipo de día, trayectoria, día desfavorable, consejo y una frase para enviar en un mensaje."
+      },
+      "timeout_seconds": 10,
+      "fields": [
+        {
+          "key": "day",
+          "type": "select",
+          "default": "today",
+          "label": {
+            "en": "Day",
+            "fr": "Jour",
+            "de": "Tag",
+            "es": "Día"
+          },
+          "options": [
+            {
+              "value": "today",
+              "label": {
+                "en": "Today",
+                "fr": "Aujourd’hui",
+                "de": "Heute",
+                "es": "Hoy"
+              }
+            },
+            {
+              "value": "tomorrow",
+              "label": {
+                "en": "Tomorrow",
+                "fr": "Demain",
+                "de": "Morgen",
+                "es": "Mañana"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Day (YYYY-MM-DD)",
+            "fr": "Jour (AAAA-MM-JJ)",
+            "de": "Tag (JJJJ-MM-TT)",
+            "es": "Día (AAAA-MM-DD)"
+          }
+        },
+        {
+          "key": "day_type",
+          "type": "string",
+          "label": {
+            "en": "Day type (fruit, root, flower, leaf)",
+            "fr": "Type de jour (fruit, root, flower, leaf)",
+            "de": "Tagestyp (fruit, root, flower, leaf)",
+            "es": "Tipo de día (fruit, root, flower, leaf)"
+          }
+        },
+        {
+          "key": "day_type_label",
+          "type": "string",
+          "label": {
+            "en": "Day type, in words",
+            "fr": "Type de jour, en toutes lettres",
+            "de": "Tagestyp, ausgeschrieben",
+            "es": "Tipo de día, en palabras"
+          }
+        },
+        {
+          "key": "day_types",
+          "type": "string",
+          "label": {
+            "en": "Day types of the day, with their times",
+            "fr": "Types de jour de la journée, avec leurs heures",
+            "de": "Tagestypen des Tages, mit Uhrzeiten",
+            "es": "Tipos de día de la jornada, con sus horas"
+          }
+        },
+        {
+          "key": "constellation",
+          "type": "string",
+          "label": {
+            "en": "Constellation of the moon",
+            "fr": "Constellation de la lune",
+            "de": "Sternbild des Mondes",
+            "es": "Constelación de la luna"
+          }
+        },
+        {
+          "key": "trajectory",
+          "type": "string",
+          "label": {
+            "en": "Trajectory (ascending, descending)",
+            "fr": "Trajectoire (ascending, descending)",
+            "de": "Bahn (ascending, descending)",
+            "es": "Trayectoria (ascending, descending)"
+          }
+        },
+        {
+          "key": "trajectory_label",
+          "type": "string",
+          "label": {
+            "en": "Trajectory, in words",
+            "fr": "Trajectoire, en toutes lettres",
+            "de": "Bahn, ausgeschrieben",
+            "es": "Trayectoria, en palabras"
+          }
+        },
+        {
+          "key": "avoid",
+          "type": "string",
+          "label": {
+            "en": "Day to avoid (yes, no)",
+            "fr": "Jour à éviter (yes, no)",
+            "de": "Ungünstiger Tag (yes, no)",
+            "es": "Día desfavorable (yes, no)"
+          }
+        },
+        {
+          "key": "avoid_reasons",
+          "type": "string",
+          "label": {
+            "en": "Why to avoid it (empty most days)",
+            "fr": "Pourquoi l’éviter (vide la plupart des jours)",
+            "de": "Warum ungünstig (meist leer)",
+            "es": "Por qué evitarlo (vacío casi siempre)"
+          }
+        },
+        {
+          "key": "phase",
+          "type": "string",
+          "label": {
+            "en": "Phase (waxing, waning)",
+            "fr": "Phase (waxing, waning)",
+            "de": "Phase (waxing, waning)",
+            "es": "Fase (waxing, waning)"
+          }
+        },
+        {
+          "key": "phase_label",
+          "type": "string",
+          "label": {
+            "en": "Phase, in words",
+            "fr": "Phase, en toutes lettres",
+            "de": "Phase, ausgeschrieben",
+            "es": "Fase, en palabras"
+          }
+        },
+        {
+          "key": "illumination",
+          "type": "number",
+          "label": {
+            "en": "Lit part of the moon (%)",
+            "fr": "Partie éclairée de la lune (%)",
+            "de": "Beleuchteter Teil des Mondes (%)",
+            "es": "Parte iluminada de la luna (%)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary sentence",
+            "fr": "Phrase de résumé",
+            "de": "Zusammenfassung",
+            "es": "Frase de resumen"
+          }
+        },
+        {
+          "key": "advice",
+          "type": "string",
+          "label": {
+            "en": "Gardening advice",
+            "fr": "Conseil de jardinage",
+            "de": "Gartentipp",
+            "es": "Consejo de jardinería"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -5,7 +5,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
-## [0.1.0] - unreleased
+## [0.1.0] - 2026-11-15
 
 ### Added
 
@@ -15,3 +15,5 @@ each release from the Conventional Commits: do not edit it by hand.
 - Scene action "Get the gardening day" (today or tomorrow), with the advice and a ready-made sentence.
 - Dashboard widgets "Gardening moon" (the day type now, until when, the next one, the trajectory, the phase, the advice) and "Garden week" (one line a day).
 - English, French, German and Spanish everywhere: settings, calendar, widgets, scenes and documentation.
+
+[0.1.0]: https://github.com/William-De71/gladys-lunar-gardening-calendar/releases/tag/v0.1.0
